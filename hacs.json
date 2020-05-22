@@ -1,5 +1,5 @@
 {
-    "name": "Boilerplate Card",
-    "render_readme": true,
-    "filename": "boilerplate-card.js"
+  "name": "Attribute Array Card",
+  "render_readme": true,
+  "filename": "attribute-array-card.js"
 }
