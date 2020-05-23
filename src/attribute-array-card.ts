@@ -31,10 +31,6 @@ console.info(
 // TODO Name your custom element
 @customElement('attribute-array-card')
 export class AttributeArrayCard extends LitElement {
-  //public static async getConfigElement(): Promise<LovelaceCardEditor> {
-  //    return document.createElement('boilerplate-card-editor') as LovelaceCardEditor;
-  //  }
-
   public static getStubConfig(): object {
     return {};
   }
@@ -67,18 +63,17 @@ export class AttributeArrayCard extends LitElement {
       return html``;
     }
 
-    // TODO Check for stateObj or other necessary things and render a warning if missing
-    //if (this._config.show_warning) {
-    //      return html`
-    //<ha-card>
-    //          <div class="warning">${localize('common.show_warning')}</div>
-    //</ha-card>
-    //`;
-    //}
+    const loopArray: Record<string, any>[] = this.hass.states[this._config.entity].attributes[this._config.attribute];
+    const firstItem = loopArray[0];
 
     return html`
-      <ha-card .header=${this._config.header} } tabindex="0" aria-label=${`Boilerplate: ${this._config.entity}`}>
-        Test
+      <ha-card .header=${this._config.header} } tabindex="0" aria-label=${`Attribute Array: ${this._config.entity}`}>
+        <state-badge .overrideIcon="${this._config.icon}"> </state-badge>
+        <div class="flex">
+          <div class="info">
+            ${firstItem[this._config.name_property || '']}
+          </div>
+        </div>
       </ha-card>
     `;
   }
@@ -90,6 +85,55 @@ export class AttributeArrayCard extends LitElement {
         color: black;
         background-color: #fce588;
         padding: 8px;
+      }
+      .flex {
+        flex: 1;
+        margin-left: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 0;
+      }
+      .info {
+        flex: 1 0 60px;
+        cursor: pointer;
+      }
+      .info,
+      .info > * {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .flex ::slotted(*) {
+        margin-left: 8px;
+        min-width: 0;
+      }
+      .flex ::slotted([slot='secondary']) {
+        margin-left: 0;
+      }
+      .secondary,
+      ha-relative-time {
+        display: block;
+        color: var(--secondary-text-color);
+      }
+      state-badge {
+        flex: 0 0 40px;
+        cursor: pointer;
+      }
+      .entity {
+        margin-right: 16px;
+        text-align: center;
+        cursor: pointer;
+      }
+      .entity span {
+        font-size: 10px;
+        color: var(--secondary-text-color);
+      }
+      .entity:last-of-type {
+        margin-right: 0;
+      }
+      .state {
+        min-width: 45px;
       }
     `;
   }
