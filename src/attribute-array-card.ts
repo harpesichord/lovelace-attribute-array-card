@@ -64,18 +64,64 @@ export class AttributeArrayCard extends LitElement {
     }
 
     const loopArray: Record<string, any>[] = this.hass.states[this._config.entity].attributes[this._config.attribute];
-    const firstItem = loopArray[0];
 
     return html`
       <ha-card .header=${this._config.header} } tabindex="0" aria-label=${`Attribute Array: ${this._config.entity}`}>
-        <state-badge .overrideIcon="${this._config.icon}"> </state-badge>
-        <div class="flex">
-          <div class="info">
-            ${firstItem[this._config.name_property || '']}
-          </div>
-        </div>
+        ${loopArray.map(attribute => this.renderAttribute(attribute))}
       </ha-card>
     `;
+  }
+
+  renderAttribute(attribute) {
+    if (!this._config || !this.hass) {
+      return html``;
+    }
+
+    return attribute
+      ? html`
+          <div class="flex">
+            <div class="info">
+              ${this.renderBadge(attribute)} ${attribute[this._config.name_property || '']}
+            </div>
+            ${this.renderEntity(this._config.item1_property, attribute[this._config.item1_property || ''])}
+            ${this.renderEntity(this._config.item2_property, attribute[this._config.item2_property || ''])}
+            ${this.renderEntity(this._config.item3_property, attribute[this._config.item3_property || ''])}
+          </div>
+          <hr />
+        `
+      : null;
+  }
+
+  renderBadge(attribute): TemplateResult {
+    if (!this._config || !this.hass) {
+      return html``;
+    }
+
+    const classValue: string =
+      this._config?.enabled_property &&
+      attribute &&
+      attribute[this._config?.enabled_property || ''] == this._config?.enabled_value
+        ? ''
+        : 'hide';
+
+    return html`
+      <state-badge
+        class="${classValue}"
+        .stateObj="${this.hass.states[this._config.entity]}"
+        .overrideIcon="${this._config.icon}"
+      ></state-badge>
+    `;
+  }
+
+  renderEntity(name, value): TemplateResult {
+    return value && name
+      ? html`
+          <div class="entity">
+            <span>${name}</span>
+            <div>${value}</div>
+          </div>
+        `
+      : html``;
   }
 
   static get styles(): CSSResult {
@@ -86,9 +132,13 @@ export class AttributeArrayCard extends LitElement {
         background-color: #fce588;
         padding: 8px;
       }
+      .hide {
+        visibility: hidden;
+      }
       .flex {
         flex: 1;
         margin-left: 16px;
+        margin-right: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -97,6 +147,7 @@ export class AttributeArrayCard extends LitElement {
       .info {
         flex: 1 0 60px;
         cursor: pointer;
+        font-size: 16px;
       }
       .info,
       .info > * {
@@ -126,7 +177,7 @@ export class AttributeArrayCard extends LitElement {
         cursor: pointer;
       }
       .entity span {
-        font-size: 10px;
+        font-size: 16px;
         color: var(--secondary-text-color);
       }
       .entity:last-of-type {
