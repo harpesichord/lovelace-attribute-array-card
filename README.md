@@ -3,7 +3,7 @@
 A Home Assistant Lovelace card that allows you to display an array in the attribute property of an entity.
 
 ![DevOpsDeploy](https://vsrm.dev.azure.com/harpemh/_apis/public/Release/badge/c05ee315-a025-430d-b05a-a3909673bf29/1/1)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=flat-square)](https://github.com/custom-components/hacs)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 ## Support
 
