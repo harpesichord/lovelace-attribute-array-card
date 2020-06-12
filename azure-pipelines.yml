@@ -24,6 +24,12 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/dist'
     Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/deploy'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: 'package.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
