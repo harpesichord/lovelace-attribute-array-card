@@ -3,6 +3,7 @@ import { HomeAssistant } from 'custom-card-helpers';
 import { AttributeArrayCardConfig } from './types';
 import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
+import { operators } from './helpers';
 
 /* eslint no-console: 0 */
 console.info(
@@ -78,12 +79,15 @@ export class AttributeArrayCard extends LitElement {
 
     let classValue = '';
     let iconValue = '';
+    let opeatorFunc = operators[this._config?.enabled_operator || '=='] || operators['=='];
+
+    operators[this._config?.enabled_operator || '=='](3,3)
 
     if (
       this._config?.enabled_icon &&
       this._config?.enabled_value != undefined &&
       this._config?.enabled_property &&
-      attributeItem[this._config?.enabled_property] == this._config?.enabled_value
+      opeatorFunc(attributeItem[this._config?.enabled_property], this._config?.enabled_value)
     )
       iconValue = this._config?.enabled_icon;
     else if (this._config?.icon) iconValue = this._config?.icon;
