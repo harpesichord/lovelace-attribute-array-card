@@ -19,6 +19,7 @@ A Home Assistant Lovelace card that allows you to display an array in the attrib
 | attribute        | string | **Optional** | Name of the attribute that contains the array to display                                                        |
 | icon             | string | **Optional** | An icon to display next to each row or leave blank for no icon                                                  |
 | enabled_property | string | **Optional** | A property to check the `enabled_value` against                                                                 |
+| enabled_operator | string | **Optional** | A property to to allow any comparison operator to check against `enabled_value`, valid values are `<`, `>`, `<=`, `>=`, `!=`, `==` |
 | enabled_value    | string | **Optional** | The value to make `enabled_property` true                                                                       |
 | enabled_icon     | string | **Optional** | If set and `enabled_property` matches `enabled_value` the icon next to each row will be replaced with this icon |
 | name_property    | string | **Optional** | The property that holds a value to be used as a header on each row                                              |
@@ -61,6 +62,8 @@ Each row can show upto 3 properties for every item in the array. If an item does
 
 ## Examples
 
+### Example 1
+
 Given the following attribute array in your entiy and the card configuration.
 
 ```json
@@ -101,6 +104,55 @@ Given the following attribute array in your entiy and the card configuration.
   item3_property: refresh
   enabled_property: alerted
   enabled_value: true
+  enabled_icon: 'mdi:lightbulb'
+  icon: 'mdi:lightbulb-outline'
+```
+
+![Example](./imgs/example.png)
+
+### Example 2
+
+Given the following attribute array in your entiy and the card configuration.
+
+```json
+{
+  "attributes": {
+    "alerts": [
+      {
+        "alerted": 50,
+        "max": 199,
+        "min": 5,
+        "name": "TEST1",
+        "refresh": 22
+      },
+      {
+        "alerted": 10,
+        "min": 50,
+        "name": "TEST2",
+        "refresh": 21
+      },
+      {
+        "alerted": 30,
+        "name": "Test3",
+        "refresh": 4
+      }
+    ]
+  }
+}
+```
+
+```yaml
+- type: 'custom:attribute-array-card'
+  header: Alerts
+  entity: sensor.thermometer
+  attribute: alerts
+  name_property: name
+  item1_property: min
+  item2_property: max
+  item3_property: refresh
+  enabled_property: alerted
+  enabled_operator: '>'
+  enabled_value: 40
   enabled_icon: 'mdi:lightbulb'
   icon: 'mdi:lightbulb-outline'
 ```
