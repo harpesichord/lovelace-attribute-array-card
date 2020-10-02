@@ -79,7 +79,7 @@ export class AttributeArrayCard extends LitElement {
 
     let classValue = '';
     let iconValue = '';
-    let opeatorFunc = operators[this._config?.enabled_operator || '=='] || operators['=='];
+    const operatorFunc = operators[this._config?.enabled_operator || '=='] || operators['=='];
 
     operators[this._config?.enabled_operator || '=='](3,3)
 
@@ -87,7 +87,7 @@ export class AttributeArrayCard extends LitElement {
       this._config?.enabled_icon &&
       this._config?.enabled_value != undefined &&
       this._config?.enabled_property &&
-      opeatorFunc(attributeItem[this._config?.enabled_property], this._config?.enabled_value)
+      operatorFunc(attributeItem[this._config?.enabled_property], this._config?.enabled_value)
     )
       iconValue = this._config?.enabled_icon;
     else if (this._config?.icon) iconValue = this._config?.icon;
